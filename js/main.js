@@ -1,7 +1,4 @@
-// Google Sheets API configuration
-const SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID';
-const API_KEY = 'YOUR_API_KEY';
-const RANGE = 'Sheet1!A2:K'; // Adjust based on your sheet
+import config from './config.js';
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
@@ -13,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function loadConcerts() {
     try {
         const response = await fetch(
-            `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`
+            `https://sheets.googleapis.com/v4/spreadsheets/${config.SPREADSHEET_ID}/values/${config.RANGE}?key=${config.API_KEY}`
         );
         const data = await response.json();
         const concerts = processConcertData(data.values);
