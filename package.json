@@ -1,0 +1,33 @@
+{
+  "name": "baithak.github.io",
+  "version": "1.0.0",
+  "description": "A website to discover and explore upcoming Indian classical music concerts.",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "dev": "npm run build && npx serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amitgud/baithak.github.io.git"
+  },
+  "keywords": [
+    "indian-classical-music",
+    "concerts",
+    "events"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amitgud/baithak.github.io/issues"
+  },
+  "homepage": "https://github.com/amitgud/baithak.github.io#readme",
+  "devDependencies": {
+    "dotenv": "^16.0.3",
+    "serve": "^14.2.0"
+  },
+  "dependencies": {
+    "mime-types": "^2.1.35"
+  }
+}

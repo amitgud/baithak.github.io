@@ -1,8 +1,8 @@
 // Configuration management
 const config = {
-    SPREADSHEET_ID: process.env.SPREADSHEET_ID || '',
-    API_KEY: process.env.GOOGLE_SHEETS_API_KEY || '',
-    SHEET_RANGE: 'Sheet1!A2:K'
+    SPREADSHEET_ID: '1OB806UNclBVqtTEOc1stk6GdKKDxZRoEB48ec1tPhrQ', // Will be replaced during build
+    GOOGLE_API_KEY: 'AIzaSyCixl7PB4YV62BjE7m8t4qKmNyA4g07ep4', // Will be replaced during build
+    SHEET_RANGE: 'Concerts!A2:K'
 };
 
 export default config;

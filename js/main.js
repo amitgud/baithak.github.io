@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function loadConcerts() {
     try {
         const response = await fetch(
-            `https://sheets.googleapis.com/v4/spreadsheets/${config.SPREADSHEET_ID}/values/${config.RANGE}?key=${config.API_KEY}`
+            `https://sheets.googleapis.com/v4/spreadsheets/${config.SPREADSHEET_ID}/values/${config.SHEET_RANGE}?key=${config.GOOGLE_API_KEY}`
         );
         const data = await response.json();
         const concerts = processConcertData(data.values);
