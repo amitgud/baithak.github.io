@@ -4,6 +4,7 @@ import config from './config.js';
 document.addEventListener('DOMContentLoaded', function() {
     loadConcerts();
     populateMonthFilter();
+    populateYearFilter();
 });
 
 // Load concerts from Google Sheets
@@ -56,7 +57,11 @@ function displayConcertSection(concerts, elementId) {
 // Create concert card HTML
 function createConcertCard(concert) {
     return `
-        <div class="col-md-4 concert-card" data-genre="${concert.genre}" data-month="${concert.date.getMonth()}">
+        <div class="col-md-4 concert-card" 
+            data-genre="${concert.genre}" 
+            data-date="${concert.date}"
+            data-month="${concert.date.getMonth()}"
+            data-year="${concert.date.getFullYear()}">
             <div class="card">
                 <img src="${concert.posterLink}" class="card-img-top concert-image" alt="${concert.title}">
                 <div class="card-body concert-details">
@@ -94,23 +99,51 @@ function populateMonthFilter() {
         option.textContent = month;
         monthFilter.appendChild(option);
     });
+    
+    // Auto select current month
+    const currentMonth = new Date().getMonth();
+    monthFilter.value = currentMonth;
+}
+
+// Populate year filter
+function populateYearFilter() {
+    const yearFilter = document.getElementById('yearFilter');
+    const currentYear = new Date().getFullYear();
+    const startYear = 2020; // You can adjust this based on your needs
+    
+    for (let year = currentYear + 1; year >= startYear; year--) {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearFilter.appendChild(option);
+    }
+    
+    // Auto select current year
+    yearFilter.value = currentYear;
 }
 
 // Filter events
 function filterEvents() {
     const genre = document.getElementById('genreFilter').value;
     const month = document.getElementById('monthFilter').value;
+    const year = document.getElementById('yearFilter').value;
     const cards = document.querySelectorAll('.concert-card');
 
     cards.forEach(card => {
         const cardGenre = card.dataset.genre;
-        const cardMonth = card.dataset.month;
+        const cardDate = new Date(card.dataset.date);
+        const cardMonth = cardDate.getMonth().toString();
+        const cardYear = cardDate.getFullYear().toString();
+        
         const showGenre = genre === 'all' || cardGenre === genre;
         const showMonth = month === 'all' || cardMonth === month;
-        card.style.display = showGenre && showMonth ? 'block' : 'none';
+        const showYear = year === 'all' || cardYear === year;
+        
+        card.style.display = showGenre && showMonth && showYear ? 'block' : 'none';
     });
 }
 
 // Add event listeners for filters
 document.getElementById('genreFilter').addEventListener('change', filterEvents);
 document.getElementById('monthFilter').addEventListener('change', filterEvents);
+document.getElementById('yearFilter').addEventListener('change', filterEvents);
