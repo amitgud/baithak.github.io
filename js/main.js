@@ -18,7 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Function to get poster URL from Google Drive ID
 function getPosterUrl(driveId) {
-    return driveId ? `https://drive.google.com/uc?export=view&id=${driveId}` : '';
+    if (!driveId) return '';
+    // Using the direct thumbnail URL from Google Drive
+    return `https://drive.google.com/thumbnail?id=${driveId}&sz=w800`;
 }
 
 // Load concerts from Google Sheets
@@ -122,7 +124,7 @@ function createConcertCard(concert) {
             data-month="${concert.date.getMonth()}"
             data-year="${concert.date.getFullYear()}">
             <div class="card">
-                <img src="${concert.posterLink}" class="card-img-top concert-image" alt="${concert.title}" onerror="this.src='https://via.placeholder.com/300x200?text=No+Poster'">
+                <img src="${concert.posterLink}" class="card-img-top concert-image" alt="${concert.title}" onerror="this.src='assets/images/no-poster.svg'">
                 <div class="card-body concert-details">
                     <h5 class="card-title">${concert.title}</h5>
                     <p class="card-text concert-date">${formatDate(concert.date)} ${concert.time}</p>
