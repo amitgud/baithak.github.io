@@ -6,6 +6,10 @@ document.addEventListener('DOMContentLoaded', function() {
     populateMonthFilter();
     populateYearFilter();
     
+    // Set initial filter values
+    document.getElementById('yearFilter').value = 'all';
+    document.getElementById('monthFilter').value = 'all';
+    
     // Add event listeners for filters
     document.getElementById('genreFilter').addEventListener('change', filterEvents);
     document.getElementById('monthFilter').addEventListener('change', filterAndUpdateTab);
@@ -124,7 +128,7 @@ function createConcertCard(concert) {
                     <p class="card-text concert-date">${formatDate(concert.date)} ${concert.time}</p>
                     <p class="card-text">${concert.artist}</p>
                     <p class="card-text concert-venue">${concert.venue}, ${concert.city}</p>
-                    <p class="card-text concert-price">₹${concert.cost}</p>
+                    <p class="card-text concert-price">${concert.cost}</p>
                     <a href="${concert.ticketLink}" class="btn btn-primary" target="_blank">Book Tickets</a>
                 </div>
             </div>
@@ -154,10 +158,6 @@ function populateMonthFilter() {
         option.textContent = month;
         monthFilter.appendChild(option);
     });
-    
-    // Auto select current month
-    const currentMonth = new Date().getMonth();
-    monthFilter.value = currentMonth;
 }
 
 // Populate year filter
@@ -172,9 +172,6 @@ function populateYearFilter() {
         option.textContent = year;
         yearFilter.appendChild(option);
     }
-    
-    // Auto select current year
-    yearFilter.value = currentYear;
 }
 
 // Filter events
