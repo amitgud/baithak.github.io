@@ -5,7 +5,17 @@ document.addEventListener('DOMContentLoaded', function() {
     loadConcerts();
     populateMonthFilter();
     populateYearFilter();
+    
+    // Add event listeners for filters
+    document.getElementById('genreFilter').addEventListener('change', filterEvents);
+    document.getElementById('monthFilter').addEventListener('change', filterAndUpdateTab);
+    document.getElementById('yearFilter').addEventListener('change', filterAndUpdateTab);
 });
+
+// Function to get poster URL from Google Drive ID
+function getPosterUrl(driveId) {
+    return driveId ? `https://drive.google.com/uc?export=view&id=${driveId}` : '';
+}
 
 // Load concerts from Google Sheets
 async function loadConcerts() {
@@ -34,7 +44,7 @@ function processConcertData(values) {
         city: row[7],
         cost: row[8],
         ticketLink: row[9],
-        posterLink: row[10]
+        posterLink: getPosterUrl(row[10])
     }));
 }
 
@@ -46,6 +56,51 @@ function displayConcerts(concerts) {
 
     displayConcertSection(upcoming, 'upcomingConcerts');
     displayConcertSection(past, 'pastConcerts');
+    
+    // Initial tab selection based on filters
+    updateTabSelection();
+}
+
+// Filter events and update tab
+function filterAndUpdateTab() {
+    filterEvents();
+    updateTabSelection();
+}
+
+// Update tab selection based on month and year filters
+function updateTabSelection() {
+    const selectedMonth = parseInt(document.getElementById('monthFilter').value);
+    const selectedYear = parseInt(document.getElementById('yearFilter').value);
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+
+    // Show "Upcoming Concerts" tab if:
+    // 1. Selected year is future year, or
+    // 2. Selected year is current year AND selected month is current month or future month
+    const showUpcoming = 
+        selectedYear > currentYear || 
+        (selectedYear === currentYear && selectedMonth >= currentMonth) ||
+        selectedMonth === -1 || // "All Months" selected
+        isNaN(selectedYear);    // "All Years" selected
+
+    // Get tab elements
+    const upcomingTab = document.querySelector('a[href="#upcoming"]');
+    const pastTab = document.querySelector('a[href="#past"]');
+    const upcomingPane = document.getElementById('upcoming');
+    const pastPane = document.getElementById('past');
+
+    if (showUpcoming) {
+        upcomingTab.classList.add('active');
+        upcomingPane.classList.add('active', 'show');
+        pastTab.classList.remove('active');
+        pastPane.classList.remove('active', 'show');
+    } else {
+        pastTab.classList.add('active');
+        pastPane.classList.add('active', 'show');
+        upcomingTab.classList.remove('active');
+        upcomingPane.classList.remove('active', 'show');
+    }
 }
 
 // Display concert section
@@ -63,7 +118,7 @@ function createConcertCard(concert) {
             data-month="${concert.date.getMonth()}"
             data-year="${concert.date.getFullYear()}">
             <div class="card">
-                <img src="${concert.posterLink}" class="card-img-top concert-image" alt="${concert.title}">
+                <img src="${concert.posterLink}" class="card-img-top concert-image" alt="${concert.title}" onerror="this.src='https://via.placeholder.com/300x200?text=No+Poster'">
                 <div class="card-body concert-details">
                     <h5 class="card-title">${concert.title}</h5>
                     <p class="card-text concert-date">${formatDate(concert.date)} ${concert.time}</p>
@@ -142,8 +197,3 @@ function filterEvents() {
         card.style.display = showGenre && showMonth && showYear ? 'block' : 'none';
     });
 }
-
-// Add event listeners for filters
-document.getElementById('genreFilter').addEventListener('change', filterEvents);
-document.getElementById('monthFilter').addEventListener('change', filterEvents);
-document.getElementById('yearFilter').addEventListener('change', filterEvents);
