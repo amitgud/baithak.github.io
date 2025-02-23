@@ -20,12 +20,29 @@ A website to discover and explore upcoming Indian classical music concerts.
    - Copy `.env.example` to `.env`
    - Update `SPREADSHEET_ID` with your Google Sheet ID
    - Update `GOOGLE_API_KEY` with your Google API Key
+   - Update `RECAPTCHA_SITE_KEY` with your reCAPTCHA v2 site key
 
 3. Start the development server:
    ```bash
    npm run dev
    ```
    This will build the project and start a local server.
+
+## Environment Variables
+
+Copy `.env.example` to `.env` and fill in the following values:
+
+- `SPREADSHEET_ID`: ID of your Google Sheet containing concert data
+- `GOOGLE_API_KEY`: Your Google API key for accessing Sheets API
+- `RECAPTCHA_SITE_KEY`: Your reCAPTCHA v2 site key
+
+### Setting up reCAPTCHA
+
+1. Go to [Google reCAPTCHA Admin](https://www.google.com/recaptcha/admin)
+2. Register a new site
+3. Choose reCAPTCHA v2 ("I'm not a robot" checkbox)
+4. Add your domain(s) to the allowed domains list
+5. Copy the Site Key to your `.env` file
 
 ## Deployment
 
@@ -37,6 +54,7 @@ The website is automatically deployed to GitHub Pages when changes are pushed to
 2. Add the following secrets:
    - `SPREADSHEET_ID`: Your Google Sheet ID
    - `GOOGLE_API_KEY`: Your Google API Key
+   - `RECAPTCHA_SITE_KEY`: Your reCAPTCHA v2 site key
 
 ## Google Sheets Setup
 
